@@ -13,6 +13,12 @@
   Cards de stories .......... https://unifesspa-ascom.github.io/stories/
   Moldura Mês do Servidor ... https://unifesspa-ascom.github.io/servidor2026/
 -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f8a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ASCOM">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
@@ -55,12 +61,21 @@ header p{margin:0 auto;color:var(--muted);font-size:15px;max-width:52ch}
 
 footer{display:flex;align-items:center;justify-content:center;gap:8px;padding-top:30px;margin-top:40px;border-top:1px solid var(--line)}
 footer span{font:600 12.5px var(--font);color:var(--muted)}
+
+.install{display:none;margin:22px auto 0;max-width:460px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:left;font-size:13.5px;color:var(--muted);box-shadow:var(--shadow)}
+.install strong{color:var(--fg)}
+.install .btn{margin-top:10px;display:none}
 </style>
 
 <div class="wrap">
   <header>
     <h1>Ferramentas ASCOM</h1>
-    <p>Páginas feitas pela ASCOM para o dia a dia da equipe. Funcionam direto no navegador, sem instalar nada.</p>
+    <p>Páginas feitas pela ASCOM para o dia a dia da equipe. Funcionam direto no navegador, sem cadastro e sem login.</p>
+    <div class="install" id="install">
+      <strong>Instale no celular</strong>
+      <div id="installText"></div>
+      <button class="btn" id="installBtn" type="button">Instalar aplicativo</button>
+    </div>
   </header>
 
   <div class="grid">
@@ -124,3 +139,25 @@ footer span{font:600 12.5px var(--font);color:var(--muted)}
     <span>Ferramentas desenvolvidas pela ASCOM</span>
   </footer>
 </div>
+
+<script>
+(function(){
+  if('serviceWorker' in navigator){ window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if(standalone) return;
+  var box=document.getElementById('install'), txt=document.getElementById('installText'), btn=document.getElementById('installBtn'), deferred=null;
+  var ua=navigator.userAgent, ios=/iphone|ipad|ipod/i.test(ua), mobile=/android|iphone|ipad|ipod/i.test(ua);
+  if(!mobile) return;
+  if(ios){
+    txt.textContent='No Safari, toque no botão de compartilhar e escolha "Adicionar à Tela de Início".';
+    box.style.display='block';
+  }
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault(); deferred=e;
+    txt.textContent='Tenha as ferramentas da ASCOM como aplicativo, direto na tela inicial do celular.';
+    btn.style.display='inline-flex'; box.style.display='block';
+  });
+  btn.addEventListener('click',function(){ if(!deferred) return; deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; box.style.display='none'; }); });
+  window.addEventListener('appinstalled',function(){ box.style.display='none'; });
+})();
+</script>

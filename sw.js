@@ -1,7 +1,7 @@
 // Service worker das Ferramentas ASCOM.
 // Estratégia: tenta sempre a internet primeiro (assim as atualizações aparecem sozinhas)
 // e guarda uma cópia para abrir sem conexão. Aumente a versão para limpar o cache antigo.
-var CACHE = 'ascom-v2';
+var CACHE = 'ascom-v3';
 var START = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function (e) {

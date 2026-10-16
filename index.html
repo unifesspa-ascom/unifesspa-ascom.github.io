@@ -3,16 +3,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ferramentas ASCOM</title>
 <!--
-  LINKS DAS FERRAMENTAS — edite aqui se os endereços mudarem.
-  Cada card abaixo repete o mesmo endereço no atributo href e no texto visível
-  logo abaixo do botão, pra ficar fácil de achar e corrigir os dois juntos.
+LINKS DAS FERRAMENTAS — edite aqui se os endereços mudarem.
+Cada card abaixo repete o mesmo endereço no atributo href e no texto visível
+logo abaixo do botão, pra ficar fácil de achar e corrigir os dois juntos.
 
-  Redimensionar imagem ...... https://unifesspa-ascom.github.io/redimensionar/
-  Nota de pesar ............. https://unifesspa-ascom.github.io/notadepesar/
-  Boletim semanal ........... https://unifesspa-ascom.github.io/boletim/
-  Cards de stories .......... https://unifesspa-ascom.github.io/stories/
-  Clipping de imprensa ...... https://unifesspa-ascom.github.io/clipping/
-  Moldura Mês do Servidor ... https://unifesspa-ascom.github.io/servidor2026/
+Redimensionar imagem ...... https://unifesspa-ascom.github.io/redimensionar/
+Nota de pesar ............. https://unifesspa-ascom.github.io/notadepesar/
+Boletim semanal ........... https://unifesspa-ascom.github.io/boletim/
+Cards de stories .......... https://unifesspa-ascom.github.io/stories/
+Clipping de imprensa ...... https://unifesspa-ascom.github.io/clipping/
+Moldura Mês do Servidor ... https://unifesspa-ascom.github.io/servidor2026/
+
+MANUAIS (PDF) — ficam na pasta /manuais/ deste mesmo repositório.
+Boletim semanal + Cards de stories ... manuais/manual-boletim-cards.pdf
+Clipping de imprensa ................. manuais/manual-clipping.pdf
 -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1f8a1a">
@@ -25,20 +29,20 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
-  --bg:#eef0ef; --surface:#ffffff; --fg:#17251d; --muted:#586a5e; --line:#d7dcd8;
-  --accent:#1d4ed8; --accent-ink:#163fb0; --accent-bg:#eaf0fd;
-  --shadow:0 14px 36px -24px rgba(4,32,16,.45);
-  --font:'Montserrat',Arial,Helvetica,sans-serif;
+--bg:#eef0ef; --surface:#ffffff; --fg:#17251d; --muted:#586a5e; --line:#d7dcd8;
+--accent:#1d4ed8; --accent-ink:#163fb0; --accent-bg:#eaf0fd;
+--shadow:0 14px 36px -24px rgba(4,32,16,.45);
+--font:'Montserrat',Arial,Helvetica,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#10140f; --surface:#1a211a; --fg:#e9efea; --muted:#9db0a2; --line:#2c352c;
-  --accent:#5b8bf0; --accent-ink:#8bb0f5; --accent-bg:#1b2436;
-  --shadow:0 14px 36px -24px rgba(0,0,0,.8);
+--bg:#10140f; --surface:#1a211a; --fg:#e9efea; --muted:#9db0a2; --line:#2c352c;
+--accent:#5b8bf0; --accent-ink:#8bb0f5; --accent-bg:#1b2436;
+--shadow:0 14px 36px -24px rgba(0,0,0,.8);
 }}
 :root[data-theme="dark"]{
-  --bg:#10140f; --surface:#1a211a; --fg:#e9efea; --muted:#9db0a2; --line:#2c352c;
-  --accent:#5b8bf0; --accent-ink:#8bb0f5; --accent-bg:#1b2436;
-  --shadow:0 14px 36px -24px rgba(0,0,0,.8);
+--bg:#10140f; --surface:#1a211a; --fg:#e9efea; --muted:#9db0a2; --line:#2c352c;
+--accent:#5b8bf0; --accent-ink:#8bb0f5; --accent-bg:#1b2436;
+--shadow:0 14px 36px -24px rgba(0,0,0,.8);
 }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.55;margin:0;padding:40px 16px 56px}
@@ -58,6 +62,10 @@ header p{margin:0 auto;color:var(--muted);font-size:15px;max-width:52ch}
 .btn:hover{background:var(--accent-ink)}
 .btn svg{width:15px;height:15px}
 
+.manual{font:600 12.5px var(--font);border-radius:10px;padding:8px 14px;border:1px solid var(--line);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;background:transparent;color:var(--muted)}
+.manual:hover{color:var(--accent);border-color:var(--accent)}
+.manual svg{width:14px;height:14px;flex:none}
+
 .card .url{font-size:11.5px;color:var(--muted);word-break:break-all;text-align:center;margin-top:-4px}
 
 footer{display:flex;align-items:center;justify-content:center;gap:8px;padding-top:30px;margin-top:40px;border-top:1px solid var(--line)}
@@ -69,118 +77,130 @@ footer span{font:600 12.5px var(--font);color:var(--muted)}
 </style>
 
 <div class="wrap">
-  <header>
-    <h1>Ferramentas ASCOM</h1>
-    <p>Páginas feitas pela ASCOM para o dia a dia da equipe. Funcionam direto no navegador, sem cadastro e sem login.</p>
-    <div class="install" id="install">
-      <strong>Instale no celular</strong>
-      <div id="installText"></div>
-      <button class="btn" id="installBtn" type="button">Instalar aplicativo</button>
-    </div>
-  </header>
+<header>
+<h1>Ferramentas ASCOM</h1>
+<p>Páginas feitas pela ASCOM para o dia a dia da equipe. Funcionam direto no navegador, sem cadastro e sem login.</p>
+<div class="install" id="install">
+<strong>Instale no celular</strong>
+<div id="installText"></div>
+<button class="btn" id="installBtn" type="button">Instalar aplicativo</button>
+</div>
+</header>
 
-  <div class="grid">
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3.2"/><path d="M8 5l1.2-2h5.6L16 5"/></svg></div>
-      <h2>Redimensionar imagem</h2>
-      <p>Envie qualquer foto e recorte no tamanho que precisar, inclusive o padrão usado no destaque de notícia do boletim (746×373).</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/redimensionar/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/redimensionar/</p>
-    </div>
+<div class="grid">
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3.2"/><path d="M8 5l1.2-2h5.6L16 5"/></svg></div>
+<h2>Redimensionar imagem</h2>
+<p>Envie qualquer foto e recorte no tamanho que precisar, inclusive o padrão usado no destaque de notícia do boletim (746×373).</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/redimensionar/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<p class="url">unifesspa-ascom.github.io/redimensionar/</p>
+</div>
 
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></div>
-      <h2>Nota de pesar</h2>
-      <p>Monte a nota de pesar em formato de e-mail, com cabeçalho e rodapé padrão da Unifesspa, e copie o HTML pronto para envio.</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/notadepesar/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/notadepesar/</p>
-    </div>
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></div>
+<h2>Nota de pesar</h2>
+<p>Monte a nota de pesar em formato de e-mail, com cabeçalho e rodapé padrão da Unifesspa, e copie o HTML pronto para envio.</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/notadepesar/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<p class="url">unifesspa-ascom.github.io/notadepesar/</p>
+</div>
 
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 4v5"/></svg></div>
-      <h2>Boletim semanal</h2>
-      <p>Monte o boletim de notícias da semana direto pelo navegador: fotos, títulos, links e resumo de cada notícia, com pré-visualização igual ao e-mail final.</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/boletim/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/boletim/</p>
-    </div>
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 4v5"/></svg></div>
+<h2>Boletim semanal</h2>
+<p>Monte o boletim de notícias da semana direto pelo navegador: fotos, títulos, links e resumo de cada notícia, com pré-visualização igual ao e-mail final.</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/boletim/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<a class="manual" href="manuais/manual-boletim-cards.pdf" target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+Ver manual (PDF)
+</a>
+<p class="url">unifesspa-ascom.github.io/boletim/</p>
+</div>
 
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10 18h4"/></svg></div>
-      <h2>Cards de stories</h2>
-      <p>Gere os cards em formato de stories (PNG em tamanho cheio) a partir das notícias do boletim, com foto e legenda sobre o modelo da ASCOM.</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/stories/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/stories/</p>
-    </div>
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M10 18h4"/></svg></div>
+<h2>Cards de stories</h2>
+<p>Gere os cards em formato de stories (PNG em tamanho cheio) a partir das notícias do boletim, com foto e legenda sobre o modelo da ASCOM.</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/stories/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<a class="manual" href="manuais/manual-boletim-cards.pdf" target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+Ver manual (PDF)
+</a>
+<p class="url">unifesspa-ascom.github.io/stories/</p>
+</div>
 
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h13a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M19 9h1a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2"/><path d="M8 9h7"/><path d="M8 13h7"/></svg></div>
-      <h2>Clipping de imprensa</h2>
-      <p>Acompanhe as matérias da imprensa que citam a Unifesspa, coletadas automaticamente. Classifique o tom, filtre por período e gere o relatório de inserções na mídia.</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/clipping/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/clipping/</p>
-    </div>
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h13a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2z"/><path d="M19 9h1a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2"/><path d="M8 9h7"/><path d="M8 13h7"/></svg></div>
+<h2>Clipping de imprensa</h2>
+<p>Acompanhe as matérias da imprensa que citam a Unifesspa, coletadas automaticamente. Classifique o tom, filtre por período e gere o relatório de inserções na mídia.</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/clipping/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<a class="manual" href="manuais/manual-clipping.pdf" target="_blank" rel="noopener">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+Ver manual (PDF)
+</a>
+<p class="url">unifesspa-ascom.github.io/clipping/</p>
+</div>
 
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg></div>
-      <h2>Métricas das redes sociais</h2>
-      <p>Painel com os números do Facebook e do Instagram da Unifesspa: visualizações, alcance, interações e seguidores, com comparativo mensal e anual.</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/metricas/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/metricas/</p>
-    </div>
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg></div>
+<h2>Métricas das redes sociais</h2>
+<p>Painel com os números do Facebook e do Instagram da Unifesspa: visualizações, alcance, interações e seguidores, com comparativo mensal e anual.</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/metricas/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<p class="url">unifesspa-ascom.github.io/metricas/</p>
+</div>
 
-    <div class="card">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/></svg></div>
-      <h2>Moldura · Mês do Servidor</h2>
-      <p>Crie sua moldura de foto de perfil para comemorar o Mês do Servidor 2026 e usar nas redes sociais.</p>
-      <a class="btn" href="https://unifesspa-ascom.github.io/servidor2026/">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
-        Abrir ferramenta
-      </a>
-      <p class="url">unifesspa-ascom.github.io/servidor2026/</p>
-    </div>
-  </div>
+<div class="card">
+<div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+<h2>Moldura · Mês do Servidor</h2>
+<p>Crie sua moldura de foto de perfil para comemorar o Mês do Servidor 2026 e usar nas redes sociais.</p>
+<a class="btn" href="https://unifesspa-ascom.github.io/servidor2026/">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+Abrir ferramenta
+</a>
+<p class="url">unifesspa-ascom.github.io/servidor2026/</p>
+</div>
+</div>
 
-  <footer>
-    <span>Ferramentas desenvolvidas pela ASCOM</span>
-  </footer>
+<footer>
+<span>Ferramentas desenvolvidas pela ASCOM</span>
+</footer>
 </div>
 
 <script>
 (function(){
-  if('serviceWorker' in navigator){ window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
-  var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  if(standalone) return;
-  var box=document.getElementById('install'), txt=document.getElementById('installText'), btn=document.getElementById('installBtn'), deferred=null;
-  var ua=navigator.userAgent, ios=/iphone|ipad|ipod/i.test(ua), mobile=/android|iphone|ipad|ipod/i.test(ua);
-  if(!mobile) return;
-  if(ios){
-    txt.textContent='No Safari, toque no botão de compartilhar e escolha "Adicionar à Tela de Início".';
-    box.style.display='block';
-  }
-  window.addEventListener('beforeinstallprompt',function(e){
-    e.preventDefault(); deferred=e;
-    txt.textContent='Tenha as ferramentas da ASCOM como aplicativo, direto na tela inicial do celular.';
-    btn.style.display='inline-flex'; box.style.display='block';
-  });
-  btn.addEventListener('click',function(){ if(!deferred) return; deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; box.style.display='none'; }); });
-  window.addEventListener('appinstalled',function(){ box.style.display='none'; });
+if('serviceWorker' in navigator){ window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
+var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+if(standalone) return;
+var box=document.getElementById('install'), txt=document.getElementById('installText'), btn=document.getElementById('installBtn'), deferred=null;
+var ua=navigator.userAgent, ios=/iphone|ipad|ipod/i.test(ua), mobile=/android|iphone|ipad|ipod/i.test(ua);
+if(!mobile) return;
+if(ios){
+txt.textContent='No Safari, toque no botão de compartilhar e escolha "Adicionar à Tela de Início".';
+box.style.display='block';
+}
+window.addEventListener('beforeinstallprompt',function(e){
+e.preventDefault(); deferred=e;
+txt.textContent='Tenha as ferramentas da ASCOM como aplicativo, direto na tela inicial do celular.';
+btn.style.display='inline-flex'; box.style.display='block';
+});
+btn.addEventListener('click',function(){ if(!deferred) return; deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; box.style.display='none'; }); });
+window.addEventListener('appinstalled',function(){ box.style.display='none'; });
 })();
 </script>

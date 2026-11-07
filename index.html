@@ -137,7 +137,7 @@
                 <div class="flex-1 max-w-md hidden md:block">
                     <div class="relative">
                         <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="globalSearch" placeholder="Buscar ferramentas, fontes, notícias ou clippings..." 
+                        <input type="text" id="globalSearch" placeholder="Buscar ferramentas, notícias ou clippings..."
                                onkeyup="handleGlobalSearch(event)"
                                class="w-full pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-blueLight focus:border-transparent transition-all">
                     </div>
@@ -191,11 +191,6 @@
                         <span>Visão Geral</span>
                     </button>
 
-                    <button onclick="switchTab('banco-fontes')" id="nav-banco-fontes" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-l-4 border-transparent transition-all">
-                        <i data-lucide="users" class="w-4 h-4"></i>
-                        <span>Banco de Fontes</span>
-                    </button>
-
                     <button onclick="switchTab('boletim-noticias')" id="nav-boletim-noticias" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-l-4 border-transparent transition-all">
                         <i data-lucide="newspaper" class="w-4 h-4"></i>
                         <span>Boletim de Notícias</span>
@@ -243,16 +238,7 @@
                 </div>
 
                 <!-- KPI Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="bg-white border border-brand-border rounded-xl p-5 shadow-sm hover:border-slate-300 transition-all">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-semibold text-slate-500 uppercase">Fontes Cadastradas</span>
-                            <span class="p-2 bg-blue-50 text-brand-blue rounded-lg"><i data-lucide="users" class="w-4 h-4"></i></span>
-                        </div>
-                        <p class="text-2xl font-bold text-slate-900 mt-2" id="kpi-sources">42</p>
-                        <p class="text-xs text-emerald-600 flex items-center gap-1 mt-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +3 este mês</p>
-                    </div>
-
+                <div class="grid grid-cols-1 gap-4 max-w-xs">
                     <div class="bg-white border border-brand-border rounded-xl p-5 shadow-sm hover:border-slate-300 transition-all">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-semibold text-slate-500 uppercase">Clippings no Mês</span>
@@ -704,49 +690,7 @@
                 </div>
             </section>
 
-            <!-- TAB 7: BANCO DE FONTES -->
-            <section id="tab-banco-fontes" class="tab-content hidden space-y-6">
-                <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                    
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                <i data-lucide="users" class="w-5 h-5 text-brand-blue"></i>
-                                Banco de Fontes e Porta-Vozes
-                            </h2>
-                            <p class="text-xs text-slate-500 mt-1">Catálogo de especialistas internos cadastrados para atendimento à imprensa.</p>
-                        </div>
-                        <button onclick="openModal('addSourceModal')" class="px-4 py-2 bg-brand-blue hover:bg-blue-900 text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-2">
-                            <i data-lucide="user-plus" class="w-4 h-4"></i> Cadastrar Fonte
-                        </button>
-                    </div>
-
-                    <!-- Filter & Search Controls -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-                        <div class="relative md:col-span-2">
-                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="sourceSearchInput" onkeyup="filterSources()" placeholder="Buscar por nome, área de conhecimento ou cargo..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
-                        </div>
-                        <div>
-                            <select id="sourceCategoryFilter" onchange="filterSources()" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
-                                <option value="">Todas as Áreas</option>
-                                <option value="Saúde & Biociências">Saúde & Biociências</option>
-                                <option value="Tecnologia & Inovação">Tecnologia & Inovação</option>
-                                <option value="Gestão Pública & Direito">Gestão Pública & Direito</option>
-                                <option value="Meio Ambiente & Sustentabilidade">Meio Ambiente & Sustentabilidade</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Expert Sources Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="sourcesContainer">
-                        <!-- Dynamic source cards -->
-                    </div>
-
-                </div>
-            </section>
-
-            <!-- TAB 8: NOTA DE PESAR -->
+            <!-- TAB 7: NOTA DE PESAR -->
             <section id="tab-nota-pesar" class="tab-content hidden space-y-6">
                 <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
@@ -827,49 +771,6 @@
         </div>
     </div>
 
-    <!-- MODAL: Cadastrar Nova Fonte -->
-    <div id="addSourceModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-slate-900 text-base">Cadastrar Novo Porta-Voz</h3>
-                <button onclick="closeModal('addSourceModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <form onsubmit="saveNewSource(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Nome Completo *</label>
-                    <input type="text" id="modalSrcName" required placeholder="Ex: Dr. Roberto Almeida" class="w-full px-3 py-2 border rounded-lg text-xs">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Cargo / Especialidade *</label>
-                    <input type="text" id="modalSrcRole" required placeholder="Ex: Diretor de Tecnologia e Dados" class="w-full px-3 py-2 border rounded-lg text-xs">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Área de Conhecimento</label>
-                    <select id="modalSrcCategory" class="w-full px-3 py-2 border rounded-lg text-xs">
-                        <option value="Saúde & Biociências">Saúde & Biociências</option>
-                        <option value="Tecnologia & Inovação">Tecnologia & Inovação</option>
-                        <option value="Gestão Pública & Direito">Gestão Pública & Direito</option>
-                        <option value="Meio Ambiente & Sustentabilidade">Meio Ambiente & Sustentabilidade</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">E-mail</label>
-                        <input type="email" id="modalSrcEmail" placeholder="nome@gov.br" class="w-full px-3 py-2 border rounded-lg text-xs">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Telefone / WhatsApp</label>
-                        <input type="text" id="modalSrcPhone" placeholder="(61) 99999-0000" class="w-full px-3 py-2 border rounded-lg text-xs">
-                    </div>
-                </div>
-                <div class="flex justify-end gap-2 pt-3 border-t">
-                    <button type="button" onclick="closeModal('addSourceModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-brand-blue hover:bg-blue-900 text-white font-semibold rounded-lg text-xs">Cadastrar Fonte</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Application JavaScript Logic -->
     <script>
         // State variables
@@ -932,43 +833,12 @@
             }
         ];
 
-        let sourcesList = [
-            {
-                id: 1,
-                name: "Dra. Mariana Costa",
-                role: "Especialista em Epidemiologia e Saúde Pública",
-                category: "Saúde & Biociências",
-                email: "mariana.costa@ascom.gov.br",
-                phone: "(61) 98844-1234",
-                status: "Disponível"
-            },
-            {
-                id: 2,
-                name: "Prof. Carlos Eduardo Paiva",
-                role: "Diretor de Inovação e Inteligência Artificial",
-                category: "Tecnologia & Inovação",
-                email: "carlos.paiva@ascom.gov.br",
-                phone: "(61) 99122-8877",
-                status: "Disponível"
-            },
-            {
-                id: 3,
-                name: "Dr. Fernando Linhares",
-                role: "Consultor Jurídico de Direito Administrativo",
-                category: "Gestão Pública & Direito",
-                email: "fernando.linhares@ascom.gov.br",
-                phone: "(61) 98111-3344",
-                status: "Em reunião"
-            }
-        ];
-
         // Initialization
         window.onload = function() {
             lucide.createIcons();
             initCropperCanvas();
             renderBulletinList();
             renderClippingTable();
-            renderSourcesCards();
             updateNewsCard();
         };
 
@@ -1374,80 +1244,6 @@
             showToast('Card copiado para a área de transferência!');
         }
 
-        // --- BANCO DE FONTES LOGIC ---
-        function renderSourcesCards(filteredData = null) {
-            const container = document.getElementById('sourcesContainer');
-            container.innerHTML = '';
-            const data = filteredData || sourcesList;
-
-            data.forEach(src => {
-                const card = document.createElement('div');
-                card.className = 'bg-white border border-brand-border rounded-xl p-5 shadow-sm hover:border-brand-blue transition-all space-y-3';
-                card.innerHTML = `
-                    <div class="flex items-start justify-between gap-2">
-                        <div>
-                            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 mb-1">${src.category}</span>
-                            <h3 class="font-bold text-slate-900 text-sm">${src.name}</h3>
-                            <p class="text-xs text-slate-500">${src.role}</p>
-                        </div>
-                        <span class="w-2.5 h-2.5 rounded-full ${src.status === 'Disponível' ? 'bg-emerald-500' : 'bg-amber-500'}" title="${src.status}"></span>
-                    </div>
-                    <div class="pt-2 border-t border-slate-100 space-y-1 text-xs text-slate-600">
-                        <p class="flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i> ${src.email}</p>
-                        <p class="flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i> ${src.phone}</p>
-                    </div>
-                    <button onclick="copySourceContact('${src.name}', '${src.phone}')" class="w-full py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
-                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar Contato
-                    </button>
-                `;
-                container.appendChild(card);
-            });
-
-            document.getElementById('kpi-sources').innerText = sourcesList.length;
-            lucide.createIcons();
-        }
-
-        function filterSources() {
-            const query = document.getElementById('sourceSearchInput').value.toLowerCase();
-            const category = document.getElementById('sourceCategoryFilter').value;
-
-            const filtered = sourcesList.filter(src => {
-                const matchesQuery = src.name.toLowerCase().includes(query) || src.role.toLowerCase().includes(query);
-                const matchesCat = !category || src.category === category;
-                return matchesQuery && matchesCat;
-            });
-
-            renderSourcesCards(filtered);
-        }
-
-        function saveNewSource(e) {
-            e.preventDefault();
-            const name = document.getElementById('modalSrcName').value;
-            const role = document.getElementById('modalSrcRole').value;
-            const category = document.getElementById('modalSrcCategory').value;
-            const email = document.getElementById('modalSrcEmail').value;
-            const phone = document.getElementById('modalSrcPhone').value;
-
-            sourcesList.unshift({
-                id: Date.now(),
-                name,
-                role,
-                category,
-                email,
-                phone,
-                status: 'Disponível'
-            });
-
-            renderSourcesCards();
-            closeModal('addSourceModal');
-            showToast('Nova fonte cadastrada com sucesso!');
-        }
-
-        function copySourceContact(name, phone) {
-            navigator.clipboard.writeText(`${name} - ${phone}`);
-            showToast(`Contato de ${name} copiado!`);
-        }
-
         // Global Search Dispatcher
         function handleGlobalSearch(e) {
             const query = e.target.value.toLowerCase();
@@ -1457,8 +1253,6 @@
                 switchTab('boletim-noticias');
             } else if (query.includes('clip') || query.includes('mídia')) {
                 switchTab('clipping');
-            } else if (query.includes('fonte') || query.includes('especialista')) {
-                switchTab('banco-fontes');
             } else if (query.includes('pesar') || query.includes('luto') || query.includes('falecimento')) {
                 switchTab('nota-pesar');
             }

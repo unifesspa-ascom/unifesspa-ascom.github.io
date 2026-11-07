@@ -251,465 +251,104 @@
             </section>
 
             <!-- TAB 2: CORTAR IMAGEM -->
-            <section id="tab-cortar-imagem" class="tab-content hidden space-y-6">
-                <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                <i data-lucide="crop" class="w-5 h-5 text-brand-blue"></i>
-                                Cortar e Adequar Imagem
-                            </h2>
-                            <p class="text-xs text-slate-500 mt-1">Carregue uma imagem e ajuste para as proporções padrão das redes sociais.</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <label class="px-4 py-2 bg-brand-blue hover:bg-blue-900 text-white text-xs font-semibold rounded-lg cursor-pointer transition-all flex items-center gap-2">
-                                <i data-lucide="upload" class="w-4 h-4"></i>
-                                <span>Carregar Imagem</span>
-                                <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                            </label>
-                            <button onclick="downloadCroppedImage()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-2">
-                                <i data-lucide="download" class="w-4 h-4"></i>
-                                <span>Baixar Recorte</span>
-                            </button>
-                        </div>
+            <section id="tab-cortar-imagem" class="tab-content hidden flex flex-col" style="min-height:75vh;">
+                <div class="bg-white border border-brand-border rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="crop" class="w-4 h-4 text-brand-blue"></i>
+                            Cortar Imagem
+                        </h2>
+                        <a href="https://unifesspa-ascom.github.io/cortarimagem/" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-blue hover:underline flex items-center gap-1 flex-shrink-0">
+                            <span>Abrir em nova aba</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
                     </div>
-
-                    <!-- Aspect Ratio Selector Buttons -->
-                    <div class="mb-4">
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-2">Proporção Desejada:</label>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="setCropRatio('1:1')" id="ratio-1-1" class="ratio-btn bg-brand-blue text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all">1:1 (Quadrado)</button>
-                            <button onclick="setCropRatio('16:9')" id="ratio-16-9" class="ratio-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">16:9 (Landscape / Portal)</button>
-                            <button onclick="setCropRatio('4:5')" id="ratio-4-5" class="ratio-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">4:5 (Feed Instagram)</button>
-                            <button onclick="setCropRatio('9:16')" id="ratio-9-16" class="ratio-btn bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">9:16 (Stories / Reels)</button>
-                        </div>
-                    </div>
-
-                    <!-- Canvas Workspace & Controls -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-xl p-4 bg-slate-50 min-h-[380px]">
-                            <canvas id="cropperCanvas" width="600" height="400" class="max-w-full rounded border border-slate-300 shadow-sm"></canvas>
-                        </div>
-
-                        <!-- Controls Panel -->
-                        <div class="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <h3 class="font-bold text-sm text-slate-800 border-b pb-2 border-slate-200">Controles de Ajuste</h3>
-                            
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Zoom / Escala</label>
-                                <input type="range" id="zoomSlider" min="0.5" max="3" step="0.05" value="1" oninput="updateCropCanvas()" class="w-full">
-                            </div>
-
-                            <div class="flex gap-2">
-                                <button onclick="rotateImage(-90)" class="flex-1 py-2 bg-white border border-slate-300 hover:bg-slate-100 rounded-lg text-xs font-semibold text-slate-700 flex items-center justify-center gap-1">
-                                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Girar -90°
-                                </button>
-                                <button onclick="rotateImage(90)" class="flex-1 py-2 bg-white border border-slate-300 hover:bg-slate-100 rounded-lg text-xs font-semibold text-slate-700 flex items-center justify-center gap-1">
-                                    <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Girar +90°
-                                </button>
-                            </div>
-
-                            <div class="pt-2">
-                                <button onclick="resetCropControls()" class="w-full py-2 bg-slate-200 hover:bg-slate-300 rounded-lg text-xs font-semibold text-slate-800">
-                                    Resetar Posicionamento
-                                </button>
-                            </div>
-
-                            <div class="text-xs text-slate-500 bg-white p-3 rounded border border-slate-200">
-                                <p class="font-bold mb-1 text-slate-700">Instruções:</p>
-                                <ul class="list-disc list-inside space-y-1">
-                                    <li>Clique e arraste a imagem dentro da área para reposicionar.</li>
-                                    <li>Ajuste a escala com o controle deslizante de Zoom.</li>
-                                    <li>Clique em "Baixar Recorte" para salvar a imagem final.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <iframe data-src="https://unifesspa-ascom.github.io/cortarimagem/" class="tool-iframe flex-1 w-full border-0" style="min-height:70vh;" title="Cortar Imagem" loading="lazy"></iframe>
                 </div>
             </section>
 
             <!-- TAB 3: BOLETIM DE NOTÍCIAS -->
-            <section id="tab-boletim-noticias" class="tab-content hidden space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    
-                    <!-- Left Column: Add News Form & Pauta Items -->
-                    <div class="lg:col-span-6 space-y-6">
-                        <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                            <h2 class="text-lg font-bold text-slate-900 mb-1 flex items-center gap-2">
-                                <i data-lucide="plus-circle" class="w-5 h-5 text-brand-blue"></i>
-                                Adicionar Pauta ao Boletim
-                            </h2>
-                            <p class="text-xs text-slate-500 mb-4">Insira os dados da notícia para compor o boletim do dia.</p>
-                            
-                            <form id="bulletinForm" onsubmit="addBulletinItem(event)" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Título da Notícia / Pauta *</label>
-                                    <input type="text" id="bulletinTitle" required placeholder="Ex: Inauguração da nova sede administrativa..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-blueLight focus:outline-none">
-                                </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Categoria / Tag</label>
-                                        <select id="bulletinCategory" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-blueLight focus:outline-none">
-                                            <option value="INSTITUCIONAL">Institucional</option>
-                                            <option value="SERVIÇOS">Serviços</option>
-                                            <option value="EVENTOS">Eventos</option>
-                                            <option value="NOTA OFICIAL">Nota Oficial</option>
-                                            <option value="URGENTE">Urgente</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Link Relacionado</label>
-                                        <input type="url" id="bulletinLink" placeholder="https://portal.gov.br/..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-blueLight focus:outline-none">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Resumo / Trecho da Notícia *</label>
-                                    <textarea id="bulletinSummary" rows="3" required placeholder="Resumo sucinto para transmissão via e-mail ou redes..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-blueLight focus:outline-none"></textarea>
-                                </div>
-                                <button type="submit" class="w-full py-2 bg-brand-blue hover:bg-blue-900 text-white font-bold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
-                                    <i data-lucide="plus" class="w-4 h-4"></i> Adicionar ao Boletim
-                                </button>
-                            </form>
-                        </div>
-
-                        <!-- Current Pautas List -->
-                        <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                            <h3 class="text-base font-bold text-slate-900 mb-3 flex items-center justify-between">
-                                <span>Pautas Incluídas no Boletim (<span id="bulletinCount">0</span>)</span>
-                                <button onclick="clearBulletinItems()" class="text-xs text-red-600 hover:underline">Limpar tudo</button>
-                            </h3>
-                            <div id="bulletinItemList" class="space-y-3">
-                                <!-- Dynamic items inserted here -->
-                            </div>
-                        </div>
+            <section id="tab-boletim-noticias" class="tab-content hidden flex flex-col" style="min-height:75vh;">
+                <div class="bg-white border border-brand-border rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="newspaper" class="w-4 h-4 text-brand-blue"></i>
+                            Boletim de Notícias
+                        </h2>
+                        <a href="https://unifesspa-ascom.github.io/boletim/" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-blue hover:underline flex items-center gap-1 flex-shrink-0">
+                            <span>Abrir em nova aba</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
                     </div>
-
-                    <!-- Right Column: Live Bulletin Preview -->
-                    <div class="lg:col-span-6 space-y-6">
-                        <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm sticky top-24">
-                            <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200">
-                                <h3 class="font-bold text-slate-900 text-base">Preview do Boletim Organizado</h3>
-                                <div class="flex gap-2">
-                                    <button onclick="copyBulletin('email')" class="px-3 py-1.5 bg-brand-blue hover:bg-blue-900 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-all">
-                                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar E-mail
-                                    </button>
-                                    <button onclick="copyBulletin('whatsapp')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-all">
-                                        <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Copiar WhatsApp
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 min-h-[400px] text-sm text-slate-800 font-mono overflow-y-auto max-h-[550px]" id="bulletinPreview">
-                                <!-- Formatted text output -->
-                            </div>
-                        </div>
-                    </div>
-
+                    <iframe data-src="https://unifesspa-ascom.github.io/boletim/" class="tool-iframe flex-1 w-full border-0" style="min-height:70vh;" title="Boletim de Notícias" loading="lazy"></iframe>
                 </div>
             </section>
 
             <!-- TAB 4: CLIPPING DE IMPRENSA -->
-            <section id="tab-clipping" class="tab-content hidden space-y-6">
-                <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                    
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                <i data-lucide="paperclip" class="w-5 h-5 text-brand-blue"></i>
-                                Clipping de Imprensa
-                            </h2>
-                            <p class="text-xs text-slate-500 mt-1">Registro e acompanhamento das matérias veiculadas na mídia.</p>
-                        </div>
-                        <button onclick="openModal('addClippingModal')" class="px-4 py-2 bg-brand-blue hover:bg-blue-900 text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Cadastrar Matéria
-                        </button>
+            <section id="tab-clipping" class="tab-content hidden flex flex-col" style="min-height:75vh;">
+                <div class="bg-white border border-brand-border rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="paperclip" class="w-4 h-4 text-brand-blue"></i>
+                            Clipping de Imprensa
+                        </h2>
+                        <a href="https://unifesspa-ascom.github.io/clipping/" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-blue hover:underline flex items-center gap-1 flex-shrink-0">
+                            <span>Abrir em nova aba</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
                     </div>
-
-                    <!-- Search & Filter Bar -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-                        <div class="relative">
-                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="clippingSearch" onkeyup="filterClippings()" placeholder="Buscar por título ou veículo..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
-                        </div>
-                        <div>
-                            <select id="clippingFilterSentiment" onchange="filterClippings()" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
-                                <option value="">Todos os Sentimentos</option>
-                                <option value="Positivo">Positivo</option>
-                                <option value="Neutro">Neutro</option>
-                                <option value="Negativo">Negativo</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select id="clippingFilterMedium" onchange="filterClippings()" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs">
-                                <option value="">Todos os Meios</option>
-                                <option value="Web / Portal">Web / Portal</option>
-                                <option value="Jornal Impresso">Jornal Impresso</option>
-                                <option value="TV / Vídeo">TV / Vídeo</option>
-                                <option value="Rádio / Podcast">Rádio / Podcast</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Clippings List / Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-700">
-                            <thead class="bg-slate-50 border-b border-slate-200 uppercase font-semibold text-slate-500">
-                                <tr>
-                                    <th class="p-3">Data</th>
-                                    <th class="p-3">Veículo / Mídia</th>
-                                    <th class="p-3">Título da Matéria</th>
-                                    <th class="p-3">Sentimento</th>
-                                    <th class="p-3 text-right">Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody id="clippingTableBody" class="divide-y divide-slate-100">
-                                <!-- Dynamic rows -->
-                            </tbody>
-                        </table>
-                    </div>
-
+                    <iframe data-src="https://unifesspa-ascom.github.io/clipping/" class="tool-iframe flex-1 w-full border-0" style="min-height:70vh;" title="Clipping de Imprensa" loading="lazy"></iframe>
                 </div>
             </section>
 
-            <!-- TAB 5: MÉTRICAS DE REDES SOCIAIS -->
-            <section id="tab-metricas" class="tab-content hidden space-y-6">
-                
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-brand-blue"></i>
-                            Métricas de Desempenho Digital
+            <!-- TAB 5: MÉTRICAS DE REDES -->
+            <section id="tab-metricas" class="tab-content hidden flex flex-col" style="min-height:75vh;">
+                <div class="bg-white border border-brand-border rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4 text-brand-blue"></i>
+                            Métricas de Redes
                         </h2>
-                        <p class="text-xs text-slate-500 mt-1">Relatórios de alcance e engajamento institucional das redes sociais.</p>
+                        <a href="https://unifesspa-ascom.github.io/metricas/" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-blue hover:underline flex items-center gap-1 flex-shrink-0">
+                            <span>Abrir em nova aba</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
                     </div>
-                    <div class="flex gap-2">
-                        <select class="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-medium">
-                            <option>Últimos 30 Dias</option>
-                            <option>Este Mês</option>
-                            <option>Últimos 7 Dias</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- KPI Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-xl border border-brand-border shadow-sm">
-                        <p class="text-xs font-semibold text-slate-500 uppercase">Alcance Total</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-2">142.800</p>
-                        <p class="text-xs text-emerald-600 mt-1 font-semibold flex items-center gap-1"><i data-lucide="arrow-up-right" class="w-3 h-3"></i> +14.2% em relação ao mês anterior</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border border-brand-border shadow-sm">
-                        <p class="text-xs font-semibold text-slate-500 uppercase">Taxa de Engajamento</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-2">4.85%</p>
-                        <p class="text-xs text-emerald-600 mt-1 font-semibold flex items-center gap-1"><i data-lucide="arrow-up-right" class="w-3 h-3"></i> +0.6% taxa média</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border border-brand-border shadow-sm">
-                        <p class="text-xs font-semibold text-slate-500 uppercase">Novos Seguidores</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-2">+1.450</p>
-                        <p class="text-xs text-slate-500 mt-1">Consolidado Instagram + LinkedIn</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-xl border border-brand-border shadow-sm">
-                        <p class="text-xs font-semibold text-slate-500 uppercase">Visualizações de Vídeo</p>
-                        <p class="text-2xl font-bold text-slate-900 mt-2">68.200</p>
-                        <p class="text-xs text-emerald-600 mt-1 font-semibold flex items-center gap-1"><i data-lucide="arrow-up-right" class="w-3 h-3"></i> +22% em Reels</p>
-                    </div>
-                </div>
-
-                <!-- Clean SVG Charts Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    
-                    <!-- Chart 1: Monthly Reach Trend -->
-                    <div class="bg-white p-6 rounded-xl border border-brand-border shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-900 mb-4 flex items-center justify-between">
-                            <span>Evolução do Alcance (Últimas 4 Semanas)</span>
-                            <span class="text-xs text-slate-400 font-normal">Pessoas Alcançadas</span>
-                        </h3>
-                        <div class="h-48 w-full flex items-end justify-between gap-4 pt-6 px-4 bg-slate-50 rounded-lg border border-slate-100">
-                            <div class="flex-1 flex flex-col items-center gap-2">
-                                <span class="text-[10px] text-slate-500">24k</span>
-                                <div class="w-full bg-blue-300 rounded-t transition-all hover:bg-brand-blue" style="height: 40%;"></div>
-                                <span class="text-xs font-medium text-slate-600">Sem 1</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2">
-                                <span class="text-[10px] text-slate-500">32k</span>
-                                <div class="w-full bg-blue-400 rounded-t transition-all hover:bg-brand-blue" style="height: 55%;"></div>
-                                <span class="text-xs font-medium text-slate-600">Sem 2</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2">
-                                <span class="text-[10px] text-slate-500">41k</span>
-                                <div class="w-full bg-blue-500 rounded-t transition-all hover:bg-brand-blue" style="height: 75%;"></div>
-                                <span class="text-xs font-medium text-slate-600">Sem 3</span>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center gap-2">
-                                <span class="text-[10px] text-slate-500">45k</span>
-                                <div class="w-full bg-brand-blue rounded-t transition-all" style="height: 85%;"></div>
-                                <span class="text-xs font-medium text-slate-600">Sem 4</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Chart 2: Network Distribution -->
-                    <div class="bg-white p-6 rounded-xl border border-brand-border shadow-sm">
-                        <h3 class="text-sm font-bold text-slate-900 mb-4">Distribuição por Canal</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                                    <span>Instagram</span>
-                                    <span>52% (74.2k)</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                                    <div class="bg-pink-600 h-full rounded-full" style="width: 52%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                                    <span>YouTube</span>
-                                    <span>24% (34.2k)</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                                    <div class="bg-red-600 h-full rounded-full" style="width: 24%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                                    <span>LinkedIn</span>
-                                    <span>16% (22.8k)</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                                    <div class="bg-blue-700 h-full rounded-full" style="width: 16%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
-                                    <span>X (Twitter)</span>
-                                    <span>8% (11.4k)</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                                    <div class="bg-slate-800 h-full rounded-full" style="width: 8%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <iframe data-src="https://unifesspa-ascom.github.io/metricas/" class="tool-iframe flex-1 w-full border-0" style="min-height:70vh;" title="Métricas de Redes" loading="lazy"></iframe>
                 </div>
             </section>
 
             <!-- TAB 6: CARDS DE NOTÍCIAS -->
-            <section id="tab-cards-noticias" class="tab-content hidden space-y-6">
-                <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                    
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                <i data-lucide="image" class="w-5 h-5 text-brand-blue"></i>
-                                Gerador de Cards de Notícias
-                            </h2>
-                            <p class="text-xs text-slate-500 mt-1">Crie imagens com texto institucional para divulgação em redes sociais.</p>
-                        </div>
-                        <button onclick="copyCardToClipboard()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition-all flex items-center gap-2">
-                            <i data-lucide="copy" class="w-4 h-4"></i>
-                            <span>Copiar Card (Simulado)</span>
-                        </button>
+            <section id="tab-cards-noticias" class="tab-content hidden flex flex-col" style="min-height:75vh;">
+                <div class="bg-white border border-brand-border rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="image" class="w-4 h-4 text-brand-blue"></i>
+                            Cards de Notícias
+                        </h2>
+                        <a href="https://unifesspa-ascom.github.io/stories/" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-blue hover:underline flex items-center gap-1 flex-shrink-0">
+                            <span>Abrir em nova aba</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
                     </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                        
-                        <!-- Inputs Form -->
-                        <div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Categoria / Chapéu</label>
-                                <input type="text" id="cardCategoryInput" value="COMUNICADO OFICIAL" oninput="updateNewsCard()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs">
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Título da Notícia</label>
-                                <textarea id="cardTitleInput" rows="3" oninput="updateNewsCard()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs">Novas diretrizes para atendimento ao público entram em vigor a partir de segunda-feira</textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Subtítulo / Data</label>
-                                <input type="text" id="cardDateInput" value="Brasília, 14 de Novembro de 2026" oninput="updateNewsCard()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs">
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Estilo de Cor</label>
-                                    <select id="cardThemeSelect" onchange="updateNewsCard()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs">
-                                        <option value="blue">Azul Ascom</option>
-                                        <option value="green">Verde Institucional</option>
-                                        <option value="dark">Escuro / Solene</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Formato</label>
-                                    <select id="cardFormatSelect" onchange="updateNewsCard()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs">
-                                        <option value="square">Quadrado (1:1)</option>
-                                        <option value="story">Story (9:16)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card Live Preview Container -->
-                        <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-100 p-6 rounded-xl border border-slate-200 min-h-[420px]">
-                            
-                            <!-- Dynamically Styled Card Canvas Element -->
-                            <div id="newsCardPreview" class="w-[360px] h-[360px] bg-brand-blue text-white rounded-xl p-6 flex flex-col justify-between shadow-lg relative overflow-hidden transition-all">
-                                
-                                <!-- Background Decorative Elements -->
-                                <div id="cardBgAccent" class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
-
-                                <!-- Card Header -->
-                                <div class="relative z-10 flex justify-between items-center">
-                                    <span id="cardCategoryPreview" class="px-2.5 py-1 bg-white/20 text-white rounded text-[10px] font-bold uppercase tracking-wider">
-                                        COMUNICADO OFICIAL
-                                    </span>
-                                    <div class="flex items-center gap-1 text-[11px] font-bold tracking-tight">
-                                        <div class="w-5 h-5 rounded bg-white text-brand-blue flex items-center justify-center font-black">A</div>
-                                        <span>Ascom</span>
-                                    </div>
-                                </div>
-
-                                <!-- Card Body / Main Title -->
-                                <div class="relative z-10 my-auto py-4">
-                                    <h3 id="cardTitlePreview" class="text-lg font-bold leading-snug">
-                                        Novas diretrizes para atendimento ao público entram em vigor a partir de segunda-feira
-                                    </h3>
-                                </div>
-
-                                <!-- Card Footer -->
-                                <div class="relative z-10 pt-3 border-t border-white/20 flex justify-between items-center text-[11px] text-blue-100">
-                                    <span id="cardDatePreview">Brasília, 14 de Novembro de 2026</span>
-                                    <span class="font-semibold">portal.gov.br</span>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
+                    <iframe data-src="https://unifesspa-ascom.github.io/stories/" class="tool-iframe flex-1 w-full border-0" style="min-height:70vh;" title="Cards de Notícias" loading="lazy"></iframe>
                 </div>
             </section>
 
             <!-- TAB 7: NOTA DE PESAR -->
-            <section id="tab-nota-pesar" class="tab-content hidden space-y-6">
-                <div class="bg-white border border-brand-border rounded-xl p-6 shadow-sm">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                <i data-lucide="heart" class="w-5 h-5 text-brand-blue"></i>
-                                Nota de Pesar
-                            </h2>
-                            <p class="text-xs text-slate-500 mt-1">Monte a nota de pesar em formato de e-mail, com cabeçalho e rodapé padrão da Unifesspa.</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col items-center justify-center text-center gap-4 py-10 px-4 bg-slate-50 rounded-xl border border-dashed border-slate-300">
-                        <i data-lucide="construction" class="w-8 h-8 text-slate-400"></i>
-                        <p class="text-sm text-slate-600 max-w-md">Esta ferramenta ainda está sendo integrada ao painel único. Por enquanto, continue usando a versão atual, que fica em outro repositório.</p>
-                        <a href="https://unifesspa-ascom.github.io/notadepesar/" target="_blank" rel="noopener" class="px-4 py-2 bg-brand-blue hover:bg-blue-900 text-white text-xs font-semibold rounded-lg transition-all inline-flex items-center gap-2">
-                            <i data-lucide="external-link" class="w-4 h-4"></i>
-                            <span>Abrir ferramenta atual</span>
+            <section id="tab-nota-pesar" class="tab-content hidden flex flex-col" style="min-height:75vh;">
+                <div class="bg-white border border-brand-border rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between gap-3 px-4 py-3 border-b border-slate-100 flex-shrink-0">
+                        <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="heart" class="w-4 h-4 text-brand-blue"></i>
+                            Nota de Pesar
+                        </h2>
+                        <a href="https://unifesspa-ascom.github.io/notadepesar/" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-blue hover:underline flex items-center gap-1 flex-shrink-0">
+                            <span>Abrir em nova aba</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                         </a>
                     </div>
+                    <iframe data-src="https://unifesspa-ascom.github.io/notadepesar/" class="tool-iframe flex-1 w-full border-0" style="min-height:70vh;" title="Nota de Pesar" loading="lazy"></iframe>
                 </div>
             </section>
 
@@ -724,132 +363,32 @@
         </div>
     </footer>
 
-    <!-- MODAL: Cadastrar Matéria de Clipping -->
-    <div id="addClippingModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-slate-900 text-base">Cadastrar Nova Matéria</h3>
-                <button onclick="closeModal('addClippingModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <form onsubmit="saveNewClipping(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Veículo / Mídia *</label>
-                    <input type="text" id="modalClipVehicle" required placeholder="Ex: Jornal O Globo, Portal G1..." class="w-full px-3 py-2 border rounded-lg text-xs">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Título da Matéria *</label>
-                    <input type="text" id="modalClipTitle" required placeholder="Título veiculado..." class="w-full px-3 py-2 border rounded-lg text-xs">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Meio</label>
-                        <select id="modalClipMedium" class="w-full px-3 py-2 border rounded-lg text-xs">
-                            <option value="Web / Portal">Web / Portal</option>
-                            <option value="Jornal Impresso">Jornal Impresso</option>
-                            <option value="TV / Vídeo">TV / Vídeo</option>
-                            <option value="Rádio / Podcast">Rádio / Podcast</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Sentimento</label>
-                        <select id="modalClipSentiment" class="w-full px-3 py-2 border rounded-lg text-xs">
-                            <option value="Positivo">Positivo</option>
-                            <option value="Neutro">Neutro</option>
-                            <option value="Negativo">Negativo</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Link / URL da Matéria</label>
-                    <input type="url" id="modalClipLink" placeholder="https://..." class="w-full px-3 py-2 border rounded-lg text-xs">
-                </div>
-                <div class="flex justify-end gap-2 pt-3 border-t">
-                    <button type="button" onclick="closeModal('addClippingModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-brand-blue hover:bg-blue-900 text-white font-semibold rounded-lg text-xs">Salvar Matéria</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Application JavaScript Logic -->
     <script>
         // State variables
         let currentFontSizeLevel = 0;
-        let cropRatio = '1:1';
-        let currentImageObj = null;
-        let cropZoom = 1;
-        let cropRotation = 0;
-        let canvasPanX = 0;
-        let canvasPanY = 0;
-        let isDraggingCanvas = false;
-        let startDragX = 0;
-        let startDragY = 0;
-
-        // Mock Datasets
-        let bulletinList = [
-            {
-                id: 1,
-                title: "Processo Seletivo Simplificado abre inscrições com 50 vagas",
-                category: "SERVIÇOS",
-                summary: "As inscrições estarão abertas até a próxima sexta-feira exclusivamente pelo portal oficial.",
-                link: "https://portal.gov.br/concurso-2026"
-            },
-            {
-                id: 2,
-                title: "Divulgado relatório anual de impacto ambiental e sustentabilidade",
-                category: "INSTITUCIONAL",
-                summary: "Documento aponta redução de 25% na pegada de carbono do órgão nos últimos 12 meses.",
-                link: "https://portal.gov.br/sustentabilidade"
-            }
-        ];
-
-        let clippingList = [
-            {
-                id: 1,
-                date: "2026-11-12",
-                vehicle: "G1 Notícias",
-                title: "Nova infraestrutura tecnológica traz agilidade aos atendimentos públicos",
-                medium: "Web / Portal",
-                sentiment: "Positivo",
-                link: "https://g1.globo.com"
-            },
-            {
-                id: 2,
-                date: "2026-11-10",
-                vehicle: "Folha de S.Paulo",
-                title: "Balanço trimestral dos investimentos em saneamento",
-                medium: "Jornal Impresso",
-                sentiment: "Neutro",
-                link: "https://folha.com.br"
-            },
-            {
-                id: 3,
-                date: "2026-11-08",
-                vehicle: "TV Brasil",
-                title: "Entrevista sobre metas de sustentabilidade até 2030",
-                medium: "TV / Vídeo",
-                sentiment: "Positivo",
-                link: "https://tvbrasil.ebc.com.br"
-            }
-        ];
 
         // Initialization
         window.onload = function() {
             lucide.createIcons();
-            initCropperCanvas();
-            renderBulletinList();
-            renderClippingTable();
-            updateNewsCard();
         };
 
         // Navigation tab switching
         function switchTab(tabId) {
             // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            
+
             // Show target tab
             const target = document.getElementById(`tab-${tabId}`);
-            if (target) target.classList.remove('hidden');
+            if (target) {
+                target.classList.remove('hidden');
+                // Lazy-load embedded tool pages only when their tab is first opened,
+                // so we don't load six external sites at once on first paint.
+                const frame = target.querySelector('iframe[data-src]');
+                if (frame && !frame.getAttribute('src')) {
+                    frame.setAttribute('src', frame.getAttribute('data-src'));
+                }
+            }
 
             // Update sidebar buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -906,344 +445,6 @@
             }, 3000);
         }
 
-        // --- CORTAR IMAGEM (CANVAS LOGIC) ---
-        function initCropperCanvas() {
-            const canvas = document.getElementById('cropperCanvas');
-            const ctx = canvas.getContext('2d');
-
-            // Draw placeholder image on load
-            drawDefaultCanvasPlaceholder();
-
-            // Drag mouse events for image panning
-            canvas.addEventListener('mousedown', (e) => {
-                isDraggingCanvas = true;
-                startDragX = e.clientX - canvasPanX;
-                startDragY = e.clientY - canvasPanY;
-            });
-            canvas.addEventListener('mousemove', (e) => {
-                if (!isDraggingCanvas) return;
-                canvasPanX = e.clientX - startDragX;
-                canvasPanY = e.clientY - startDragY;
-                updateCropCanvas();
-            });
-            window.addEventListener('mouseup', () => isDraggingCanvas = false);
-        }
-
-        function drawDefaultCanvasPlaceholder() {
-            const canvas = document.getElementById('cropperCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Placeholder gradient background
-            const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, '#1E3A8A');
-            grad.addColorStop(1, '#047857');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Placeholder Text
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 18px Atkinson Hyperlegible, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('Clique em "Carregar Imagem" para recortar', canvas.width / 2, canvas.height / 2);
-            ctx.font = '12px Atkinson Hyperlegible, sans-serif';
-            ctx.fillText('Suporta formatos 1:1, 16:9, 4:5 e 9:16', canvas.width / 2, (canvas.height / 2) + 24);
-        }
-
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const img = new Image();
-                img.onload = function() {
-                    currentImageObj = img;
-                    resetCropControls();
-                    updateCropCanvas();
-                    showToast('Imagem carregada com sucesso.');
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function setCropRatio(ratio) {
-            cropRatio = ratio;
-            document.querySelectorAll('.ratio-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-blue', 'text-white');
-                btn.classList.add('bg-slate-100', 'text-slate-700');
-            });
-            const selectedBtn = document.getElementById(`ratio-${ratio.replace(':', '-')}`);
-            if (selectedBtn) {
-                selectedBtn.classList.add('bg-brand-blue', 'text-white');
-                selectedBtn.classList.remove('bg-slate-100', 'text-slate-700');
-            }
-            updateCropCanvas();
-        }
-
-        function rotateImage(deg) {
-            cropRotation = (cropRotation + deg) % 360;
-            updateCropCanvas();
-        }
-
-        function resetCropControls() {
-            cropZoom = 1;
-            cropRotation = 0;
-            canvasPanX = 0;
-            canvasPanY = 0;
-            document.getElementById('zoomSlider').value = 1;
-            updateCropCanvas();
-        }
-
-        function updateCropCanvas() {
-            const canvas = document.getElementById('cropperCanvas');
-            const ctx = canvas.getContext('2d');
-            cropZoom = parseFloat(document.getElementById('zoomSlider').value);
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (currentImageObj) {
-                ctx.save();
-                ctx.translate(canvas.width / 2 + canvasPanX, canvas.height / 2 + canvasPanY);
-                ctx.rotate((cropRotation * Math.PI) / 180);
-                ctx.scale(cropZoom, cropZoom);
-                ctx.drawImage(currentImageObj, -currentImageObj.width / 2, -currentImageObj.height / 2);
-                ctx.restore();
-            } else {
-                drawDefaultCanvasPlaceholder();
-            }
-
-            // Overlay ratio frame guide
-            drawRatioGuideOverlay(ctx, canvas.width, canvas.height, cropRatio);
-        }
-
-        function drawRatioGuideOverlay(ctx, cw, ch, ratio) {
-            ctx.save();
-            let rw = cw - 80;
-            let rh = ch - 80;
-
-            if (ratio === '1:1') {
-                rw = Math.min(cw, ch) - 80;
-                rh = rw;
-            } else if (ratio === '16:9') {
-                rw = cw - 60;
-                rh = rw * (9 / 16);
-            } else if (ratio === '4:5') {
-                rh = ch - 60;
-                rw = rh * (4 / 5);
-            } else if (ratio === '9:16') {
-                rh = ch - 40;
-                rw = rh * (9 / 16);
-            }
-
-            const rx = (cw - rw) / 2;
-            const ry = (ch - rh) / 2;
-
-            // Semi-transparent mask
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.4)';
-            ctx.fillRect(0, 0, cw, ry);
-            ctx.fillRect(0, ry + rh, cw, ch - (ry + rh));
-            ctx.fillRect(0, ry, rx, rh);
-            ctx.fillRect(rx + rw, ry, cw - (rx + rw), rh);
-
-            // Border outline
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([6, 6]);
-            ctx.strokeRect(rx, ry, rw, rh);
-            ctx.restore();
-        }
-
-        function downloadCroppedImage() {
-            const canvas = document.getElementById('cropperCanvas');
-            const link = document.createElement('a');
-            link.download = `recorte-ascom-${cropRatio.replace(':', 'x')}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-            showToast('Download do recorte iniciado.');
-        }
-
-        // --- BOLETIM DE NOTÍCIAS LOGIC ---
-        function addBulletinItem(e) {
-            e.preventDefault();
-            const title = document.getElementById('bulletinTitle').value;
-            const category = document.getElementById('bulletinCategory').value;
-            const link = document.getElementById('bulletinLink').value;
-            const summary = document.getElementById('bulletinSummary').value;
-
-            bulletinList.push({
-                id: Date.now(),
-                title,
-                category,
-                link,
-                summary
-            });
-
-            document.getElementById('bulletinForm').reset();
-            renderBulletinList();
-            showToast('Pauta adicionada ao boletim.');
-        }
-
-        function removeBulletinItem(id) {
-            bulletinList = bulletinList.filter(item => item.id !== id);
-            renderBulletinList();
-        }
-
-        function clearBulletinItems() {
-            bulletinList = [];
-            renderBulletinList();
-        }
-
-        function renderBulletinList() {
-            const container = document.getElementById('bulletinItemList');
-            document.getElementById('bulletinCount').innerText = bulletinList.length;
-            container.innerHTML = '';
-
-            if (bulletinList.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic">Nenhuma pauta adicionada até o momento.</p>`;
-                updateBulletinPreview();
-                return;
-            }
-
-            bulletinList.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-start justify-between gap-3';
-                card.innerHTML = `
-                    <div>
-                        <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-brand-blue mb-1">${item.category}</span>
-                        <h4 class="text-xs font-bold text-slate-800">${index + 1}. ${item.title}</h4>
-                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">${item.summary}</p>
-                    </div>
-                    <button onclick="removeBulletinItem(${item.id})" class="text-slate-400 hover:text-red-600 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                `;
-                container.appendChild(card);
-            });
-
-            lucide.createIcons();
-            updateBulletinPreview();
-        }
-
-        function updateBulletinPreview() {
-            const preview = document.getElementById('bulletinPreview');
-            const today = new Date().toLocaleDateString('pt-BR');
-
-            let text = `Boletim de Notícias Ascom - ${today}\n=========================================\n\n`;
-            if (bulletinList.length === 0) {
-                text += `Nenhuma pauta adicionada no boletim atual.`;
-            } else {
-                bulletinList.forEach((item, i) => {
-                    text += `📌 [${item.category}] ${item.title}\n`;
-                    text += `${item.summary}\n`;
-                    if (item.link) text += `🔗 Leia mais: ${item.link}\n`;
-                    text += `\n-----------------------------------------\n\n`;
-                });
-            }
-            preview.innerText = text;
-        }
-
-        function copyBulletin(format) {
-            const content = document.getElementById('bulletinPreview').innerText;
-            navigator.clipboard.writeText(content).then(() => {
-                showToast(`Boletim copiado no formato ${format.toUpperCase()}!`);
-            });
-        }
-
-        // --- CLIPPING DE IMPRENSA LOGIC ---
-        function renderClippingTable(filteredData = null) {
-            const tbody = document.getElementById('clippingTableBody');
-            tbody.innerHTML = '';
-            const data = filteredData || clippingList;
-
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-slate-50 transition-colors';
-                
-                const sentimentColor = item.sentiment === 'Positivo' ? 'bg-emerald-100 text-emerald-800' :
-                                       item.sentiment === 'Negativo' ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-700';
-
-                row.innerHTML = `
-                    <td class="p-3 text-slate-500 whitespace-nowrap">${item.date}</td>
-                    <td class="p-3 font-semibold text-slate-900">${item.vehicle} <span class="text-[10px] block font-normal text-slate-400">${item.medium}</span></td>
-                    <td class="p-3 text-slate-800">${item.title}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${sentimentColor}">${item.sentiment}</span></td>
-                    <td class="p-3 text-right">
-                        <a href="${item.link}" target="_blank" class="text-brand-blue hover:underline font-semibold inline-flex items-center gap-1">
-                            Acessar <i data-lucide="external-link" class="w-3 h-3"></i>
-                        </a>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            document.getElementById('kpi-clippings').innerText = clippingList.length;
-            lucide.createIcons();
-        }
-
-        function filterClippings() {
-            const query = document.getElementById('clippingSearch').value.toLowerCase();
-            const sentiment = document.getElementById('clippingFilterSentiment').value;
-            const medium = document.getElementById('clippingFilterMedium').value;
-
-            const filtered = clippingList.filter(item => {
-                const matchesQuery = item.title.toLowerCase().includes(query) || item.vehicle.toLowerCase().includes(query);
-                const matchesSentiment = !sentiment || item.sentiment === sentiment;
-                const matchesMedium = !medium || item.medium === medium;
-                return matchesQuery && matchesSentiment && matchesMedium;
-            });
-
-            renderClippingTable(filtered);
-        }
-
-        function saveNewClipping(e) {
-            e.preventDefault();
-            const vehicle = document.getElementById('modalClipVehicle').value;
-            const title = document.getElementById('modalClipTitle').value;
-            const medium = document.getElementById('modalClipMedium').value;
-            const sentiment = document.getElementById('modalClipSentiment').value;
-            const link = document.getElementById('modalClipLink').value || '#';
-
-            clippingList.unshift({
-                id: Date.now(),
-                date: new Date().toISOString().split('T')[0],
-                vehicle,
-                title,
-                medium,
-                sentiment,
-                link
-            });
-
-            renderClippingTable();
-            closeModal('addClippingModal');
-            showToast('Matéria cadastrada com sucesso!');
-        }
-
-        // --- CARDS DE NOTÍCIAS LOGIC ---
-        function updateNewsCard() {
-            const cat = document.getElementById('cardCategoryInput').value || 'COMUNICADO';
-            const title = document.getElementById('cardTitleInput').value || 'Título da notícia...';
-            const date = document.getElementById('cardDateInput').value || 'Data da publicação';
-            const theme = document.getElementById('cardThemeSelect').value;
-            const format = document.getElementById('cardFormatSelect').value;
-
-            const preview = document.getElementById('newsCardPreview');
-            document.getElementById('cardCategoryPreview').innerText = cat;
-            document.getElementById('cardTitlePreview').innerText = title;
-            document.getElementById('cardDatePreview').innerText = date;
-
-            // Apply Theme
-            preview.className = `text-white rounded-xl p-6 flex flex-col justify-between shadow-lg relative overflow-hidden transition-all ${
-                theme === 'green' ? 'bg-brand-green' :
-                theme === 'dark' ? 'bg-slate-900' : 'bg-brand-blue'
-            } ${
-                format === 'story' ? 'w-[280px] h-[495px]' : 'w-[360px] h-[360px]'
-            }`;
-        }
-
-        function copyCardToClipboard() {
-            showToast('Card copiado para a área de transferência!');
-        }
-
         // Global Search Dispatcher
         function handleGlobalSearch(e) {
             const query = e.target.value.toLowerCase();
@@ -1258,13 +459,6 @@
             }
         }
 
-        // Modal Handlers
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
 
         // PWA: service worker + install prompt
         (function () {

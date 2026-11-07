@@ -1,6 +1,6 @@
 {
-  "name": "Ferramentas ASCOM",
-  "short_name": "ASCOM",
+  "name": "Painel Ascom",
+  "short_name": "Ascom",
   "description": "Ferramentas da Assessoria de Comunicação da Unifesspa",
   "start_url": "./",
   "scope": "./",

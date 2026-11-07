@@ -51,35 +51,6 @@
             background-color: #F1F1F1;
         }
 
-        /* High contrast mode styles */
-        body.high-contrast {
-            background-color: #000000 !important;
-            color: #FFFFFF !important;
-        }
-        body.high-contrast .bg-white,
-        body.high-contrast .bg-brand-card {
-            background-color: #121212 !important;
-            color: #FFFFFF !important;
-            border-color: #FFFFFF !important;
-        }
-        body.high-contrast .border-brand-border,
-        body.high-contrast .border-gray-200,
-        body.high-contrast .border-gray-300 {
-            border-color: #FFFFFF !important;
-        }
-        body.high-contrast text,
-        body.high-contrast span,
-        body.high-contrast p,
-        body.high-contrast h1,
-        body.high-contrast h2,
-        body.high-contrast h3,
-        body.high-contrast label {
-            color: #FFFFFF !important;
-        }
-        body.high-contrast button {
-            border: 2px solid #FFFFFF !important;
-        }
-
         /* Accessible focus rings */
         :focus-visible {
             outline: 3px solid #2563EB !important;
@@ -133,16 +104,6 @@
                     </div>
                 </div>
 
-                <!-- Global Search -->
-                <div class="flex-1 max-w-md hidden md:block">
-                    <div class="relative">
-                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="globalSearch" placeholder="Buscar ferramentas, notícias ou clippings..."
-                               onkeyup="handleGlobalSearch(event)"
-                               class="w-full pl-9 pr-4 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-blueLight focus:border-transparent transition-all">
-                    </div>
-                </div>
-
                 <!-- Status & Accessibility Controls -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     
@@ -151,18 +112,6 @@
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span class="font-medium">Sistemas Operacionais</span>
                     </div>
-
-                    <!-- Accessibility Font Resize -->
-                    <div class="flex items-center border border-slate-200 rounded-lg bg-slate-50 p-0.5" title="Acessibilidade: Ajustar Tamanho da Fonte">
-                        <button onclick="changeFontSize(-1)" class="px-2 py-1 text-xs font-bold text-slate-600 hover:bg-white rounded border-r border-slate-200" aria-label="Diminuir Fonte">A-</button>
-                        <button onclick="resetFontSize()" class="px-2 py-1 text-xs font-bold text-slate-600 hover:bg-white rounded border-r border-slate-200" aria-label="Tamanho de Fonte Padrão">A</button>
-                        <button onclick="changeFontSize(1)" class="px-2 py-1 text-xs font-bold text-slate-600 hover:bg-white rounded" aria-label="Aumentar Fonte">A+</button>
-                    </div>
-
-                    <!-- High Contrast Toggle -->
-                    <button onclick="toggleHighContrast()" class="p-2 border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-100 flex items-center justify-center" title="Alternar Alto Contraste (WCAG)" aria-label="Alto Contraste">
-                        <i data-lucide="eye" class="w-4 h-4"></i>
-                    </button>
 
                 </div>
             </div>
@@ -365,9 +314,6 @@
 
     <!-- Application JavaScript Logic -->
     <script>
-        // State variables
-        let currentFontSizeLevel = 0;
-
         // Initialization
         window.onload = function() {
             lucide.createIcons();
@@ -412,24 +358,6 @@
             sidebar.classList.toggle('hidden');
         }
 
-        // Accessibility Functions
-        function toggleHighContrast() {
-            document.body.classList.toggle('high-contrast');
-            showToast('Modo de Alto Contraste alternado.');
-        }
-
-        function changeFontSize(delta) {
-            currentFontSizeLevel = Math.max(-2, Math.min(3, currentFontSizeLevel + delta));
-            const baseSize = 16 + (currentFontSizeLevel * 2);
-            document.getElementById('appBody').style.fontSize = `${baseSize}px`;
-            showToast(`Tamanho do texto ajustado.`);
-        }
-
-        function resetFontSize() {
-            currentFontSizeLevel = 0;
-            document.getElementById('appBody').style.fontSize = '16px';
-        }
-
         // Toast Notification System
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
@@ -444,21 +372,6 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-
-        // Global Search Dispatcher
-        function handleGlobalSearch(e) {
-            const query = e.target.value.toLowerCase();
-            if (query.includes('crop') || query.includes('cortar') || query.includes('imagem')) {
-                switchTab('cortar-imagem');
-            } else if (query.includes('boletim') || query.includes('pauta')) {
-                switchTab('boletim-noticias');
-            } else if (query.includes('clip') || query.includes('mídia')) {
-                switchTab('clipping');
-            } else if (query.includes('pesar') || query.includes('luto') || query.includes('falecimento')) {
-                switchTab('nota-pesar');
-            }
-        }
-
 
         // PWA: service worker + install prompt
         (function () {
